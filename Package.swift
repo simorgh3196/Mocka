@@ -15,7 +15,7 @@ let package = Package(
     targets: [
         .target(name: "Mocka"),
         .target(name: "MockaGenerator", dependencies: [
-            "Commander",
+            "Commandant",
             "SwiftSyntax",
             "StencilSwiftKit"
             ]),

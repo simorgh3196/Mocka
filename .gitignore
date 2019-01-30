@@ -1,3 +1,7 @@
+/.build
+/Packages
+/*.xcodeproj
+
 gibo 2.1.0 by Simon Whitaker <sw@netcetera.org>
 https://github.com/simonwhitaker/gibo
 gibo 2.1.0 by Simon Whitaker <sw@netcetera.org>
@@ -71,7 +75,6 @@ playground.xcworkspace
 # Swift Package Manager
 #
 # Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
 # Package.pins
 # Package.resolved
 .build/
