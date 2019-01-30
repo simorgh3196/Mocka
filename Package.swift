@@ -19,6 +19,7 @@ let package = Package(
             "SwiftSyntax",
             "StencilSwiftKit"
             ]),
-        .testTarget(name: "MockaTests", dependencies: ["Mocka"])
+        .testTarget(name: "MockaTests", dependencies: ["Mocka"]),
+        .testTarget(name: "MockaGeneratorTests")
     ]
 )
