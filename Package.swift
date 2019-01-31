@@ -2,10 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "Mocka",
+    name: "SwiftMocka",
     products: [
-        .library(name: "Mocka", targets: ["Mocka"]),
-        .executable(name: "mocka", targets: ["MockaGenerator"])
+        .library(name: "SwiftMocka", targets: ["SwiftMocka"]),
+        .library(name: "SwiftMockaGenerator", targets: ["SwiftMockaGenerator"]),
+        .executable(name: "mocka", targets: ["MockaCommand"])
     ],
     dependencies: [
         .package(url: "https://github.com/Carthage/Commandant.git", .exact("0.15.0")),
@@ -13,13 +14,17 @@ let package = Package(
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .exact("2.7.2"))
     ],
     targets: [
-        .target(name: "Mocka"),
-        .target(name: "MockaGenerator", dependencies: [
-            "Commandant",
+        .target(name: "SwiftMocka"),
+        .target(name: "SwiftMockaGenerator", dependencies: [
             "SwiftSyntax",
             "StencilSwiftKit"
             ]),
-        .testTarget(name: "MockaTests", dependencies: ["Mocka"]),
-        .testTarget(name: "MockaGeneratorTests")
+        .target(name: "MockaCommand", dependencies: [
+            "Commandant",
+            "SwiftMockaGenerator"
+            ]),
+        .testTarget(name: "SwiftMockaTests", dependencies: ["SwiftMocka"]),
+        .testTarget(name: "SwiftMockaGeneratorTests", dependencies: ["SwiftMockaGenerator", "SwiftMocka"]),
+        .testTarget(name: "MockaCommandTests", dependencies: ["MockaCommand", "SwiftMockaGeneratorTests"])
     ]
 )

@@ -2,7 +2,7 @@ PREFIX?=/usr/local
 
 .PHONY: xcodeproj
 xcodeproj:
-	swift package generate-xcodeproj --output ./Mocka.xcodeproj
+	swift package generate-xcodeproj --output ./SwiftMocka.xcodeproj
 
 .PHONY: build
 build:
