@@ -1,0 +1,5 @@
+protocol Container {
+}
+
+protocol ContainerMember {
+}
