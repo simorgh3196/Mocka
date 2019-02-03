@@ -1,6 +1,7 @@
-struct Method: Function, ContainerMember {
-    let name: String
-    let accessibility: Accessibility
-    let parameters: [FunctionParameter]
-    let returnSignature: String
+protocol Method {
+    var accessibility: Accessibility { get }
+    var name: String { get }
+    var parameters: [FunctionParameter] { get }
+    var returnType: String? { get }
+    var throwType: ThrowClause { get }
 }

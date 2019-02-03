@@ -1,11 +1,11 @@
-struct Property: Variable, ContainerMember {
+struct StaticProperty: Variable, ContainerMember {
     var accessibility: Accessibility
     var name: String
     var type: String
     var isReadOnly: Bool
 }
 
-extension Property {
+extension StaticProperty {
     init(accessibility: Accessibility?, name: String, type: String, isReadOnly: Bool) {
         self.accessibility = accessibility ?? .internal
         self.name = name

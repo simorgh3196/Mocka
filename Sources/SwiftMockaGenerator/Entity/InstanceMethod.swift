@@ -1,4 +1,4 @@
-struct StaticMethod: Method, ContainerMember {
+struct InstanceMethod: Method, ContainerMember {
     var accessibility: Accessibility
     var name: String
     var parameters: [FunctionParameter]
