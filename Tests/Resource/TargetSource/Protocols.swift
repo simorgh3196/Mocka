@@ -3,9 +3,9 @@ import Foundation
 // Mocka:Protocol
 protocol NormalProtocol {
 
-    init()
+    init() throws
 
-    init(labelA a: String, _ b: String)
+    init(labelA a: String, _ b: String, c: Int)
 
     var readOnlyProperty: String { get }
 
@@ -22,6 +22,8 @@ protocol NormalProtocol {
     func noReturn()
 
     func withThrows() throws -> Int
+
+    func withReThrows() rethrows -> Int
 
     func withNoReturnThrows() throws
 
