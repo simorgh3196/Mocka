@@ -9,9 +9,9 @@ let package = Package(
         .executable(name: "mocka", targets: ["MockaCommand"])
     ],
     dependencies: [
-        .package(url: "https://github.com/Carthage/Commandant.git", .exact("0.15.0")),
-        .package(url: "https://github.com/apple/swift-syntax.git", .exact("0.40200.0")),
-        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .exact("2.7.2"))
+        .package(url: "https://github.com/Carthage/Commandant.git", .upToNextMajor(from: "0.15.0")),
+        .package(url: "https://github.com/apple/swift-syntax.git", .upToNextMajor(from: "0.40200.0")),
+        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.7.2"))
     ],
     targets: [
         .target(name: "SwiftMocka"),
