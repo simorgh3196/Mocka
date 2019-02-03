@@ -1,7 +1,7 @@
 import XCTest
 import class Foundation.Bundle
 
-final class MockaTests: XCTestCase {
+final class MockaCommandTests: XCTestCase {
 
     func testExample() throws {
         // Some of the APIs that we use below are available in macOS 10.13 and above.

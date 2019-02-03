@@ -1,5 +1,5 @@
 import XCTest
-@testable import Mocka
+@testable import SwiftMocka
 
-final class MockaTests: XCTestCase {
+final class SwiftMockaTests: XCTestCase {
 }
