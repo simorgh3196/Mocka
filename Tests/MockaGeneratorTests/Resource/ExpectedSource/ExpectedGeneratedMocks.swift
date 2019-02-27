@@ -2,6 +2,68 @@
 // Don't edit this file
 
 import Mocka
+@testable import Mocka
+
+func test() {
+    let mock = MockSimpleProtocol()
+
+    stub(mock) { stub in
+        when(stub.readWriteProperty.get).thenReturn(10).thenReturn(10).thenReturn { 10 * 20 }
+    }
+}
+
+class MockSimpleProtocol: SimpleProtocol, Mock {
+    static let identifier: String = "SimpleProtocol"
+    lazy var stub = Stubbing(mock: self)
+    lazy var verification = Verificating(mock: self)
+
+    var readWriteProperty: Int = 0
+    var optionalProperty: Int? = 0
+    func noReturn() {}
+    func withParam(_ param: String, param2: String) -> Int { fatalError() }
+
+    class Stubbing: Stub {
+
+        let mock: MockSimpleProtocol
+
+        init(mock: MockSimpleProtocol) {
+            self.mock = mock
+        }
+
+        var readWriteProperty: StubProperty<MockSimpleProtocol, Int> {
+            return StubProperty(mock: mock, identifier: "readWriteProperty")
+        }
+
+        var optionalProperty: StubProperty<MockSimpleProtocol, Int?> {
+            return StubProperty(mock: mock, identifier: "optionalProperty")
+        }
+
+        func noReturn() -> StubFunction<MockSimpleProtocol, Void, Void> {
+            return StubFunction(
+                mock: mock,
+                identifier: "noReturn()",
+                input: ()
+            )
+        }
+
+        func withParam(_ param: String, param2: String) -> StubFunction<MockSimpleProtocol, (String, String), Int> {
+            return StubFunction(
+                mock: mock,
+                identifier: "withParam(_ param: String, param2: String) -> Int",
+                input: (param, param2)
+            )
+        }
+    }
+
+    class Verificating: Verification {
+
+        let mock: MockSimpleProtocol
+
+        init(mock: MockSimpleProtocol) {
+            self.mock = mock
+        }
+    }
+}
 
 class MockNormalProtocol: NormalProtocol, Mock {
 

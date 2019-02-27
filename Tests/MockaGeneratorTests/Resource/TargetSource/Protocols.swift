@@ -1,6 +1,18 @@
 import Foundation
 
 // Mocka:Protocol
+protocol SimpleProtocol {
+
+    var readWriteProperty: Int { get set }
+
+    var optionalProperty: Int? { get set }
+
+    func noReturn()
+
+    func withParam(_ param1: String, param2: String) -> Int
+}
+
+// Mocka:Protocol
 protocol NormalProtocol {
 
     init() throws
@@ -22,8 +34,6 @@ protocol NormalProtocol {
     func noReturn()
 
     func withThrows() throws -> Int
-
-    func withReThrows() rethrows -> Int
 
     func withNoReturnThrows() throws
 
