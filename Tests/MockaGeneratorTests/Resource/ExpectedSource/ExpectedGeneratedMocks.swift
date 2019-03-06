@@ -8,7 +8,10 @@ func test() {
     let mock = MockSimpleProtocol()
 
     stub(mock) { stub in
-        when(stub.readWriteProperty.get).thenReturn(10).thenReturn(10).thenReturn { 10 * 20 }
+        when(stub.readWriteProperty.get)
+                .thenReturn(10)
+                .thenReturn(10)
+                .thenReturn { 10 * 20 }
     }
 }
 
@@ -46,7 +49,9 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
             )
         }
 
-        func withParam(_ param: String, param2: String) -> StubFunction<MockSimpleProtocol, (String, String), Int> {
+        func withParam<_String: Matchable>(_ param: _String, param2: _String) -> StubFunction<MockSimpleProtocol, (String, String), Int>
+                where _String.MatchedType == String
+        {
             return StubFunction(
                 mock: mock,
                 identifier: "withParam(_ param: String, param2: String) -> Int",
@@ -55,7 +60,7 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
         }
     }
 
-    class Verificating: Verification {
+    class Verifying: Verification {
 
         let mock: MockSimpleProtocol
 
