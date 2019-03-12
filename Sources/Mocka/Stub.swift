@@ -3,13 +3,13 @@ public protocol Stub {
     var mock: Mocking { get }
 }
 
-public class StubFunction<Mocking: Mock, Input, Output> {
+public class StubMethod<Mocking: Mock, Input, Output> {
 
     let mock: Mocking
     let identifier: String
     let input: Input
 
-    init(mock: Mocking, identifier: String, input: Input) {
+    public init(mock: Mocking, identifier: String, input: Input) {
         self.mock = mock
         self.identifier = identifier
         self.input = input
@@ -21,17 +21,17 @@ public class StubProperty<Mocking: Mock, T> {
     let mock: Mocking
     let identifier: String
 
-    init(mock: Mocking, identifier: String) {
+    public init(mock: Mocking, identifier: String) {
         self.mock = mock
         self.identifier = "\(Mocking.identifier).\(identifier)"
     }
 
-    var get: StubFunction<Mocking, Void, T> {
-        return StubFunction(mock: mock, identifier: identifier + "#get", input: ())
+    public var get: StubMethod<Mocking, Void, T> {
+        return StubMethod(mock: mock, identifier: identifier + "#get", input: ())
     }
 
-    func set(_ value: T) -> StubFunction<Mocking, T, Void> {
-        return StubFunction(mock: mock, identifier: identifier + "#set", input: value)
+    public func set<M: Matchable>(_ parameter: M) -> StubMethod<Mocking, M, Void> where M.MatchedType == T {
+        return StubMethod(mock: mock, identifier: identifier + "#set", input: parameter)
     }
 }
 
@@ -53,32 +53,32 @@ class StubAction<Mocking: Mock, Input, Output> {
 
 public class ThenStubAction<Mocking: Mock, Input, Output> {
 
-    private let function: StubFunction<Mocking, Input, Output>
+    private let function: StubMethod<Mocking, Input, Output>
 
-    init(function: StubFunction<Mocking, Input, Output>) {
+    init(function: StubMethod<Mocking, Input, Output>) {
         self.function = function
     }
 
     @discardableResult
-    func thenDoNothing() -> ThenStubAction<Mocking, Input, Output> {
+    public func thenDoNothing() -> ThenStubAction<Mocking, Input, Output> {
         // save action
         return self
     }
 
     @discardableResult
-    func thenDo(_ action: ((Input) -> Void)) -> ThenStubAction<Mocking, Input, Output> {
+    public func thenDo(_ action: ((Input) -> Void)) -> ThenStubAction<Mocking, Input, Output> {
         // save action
         return self
     }
 
     @discardableResult
-    func thenReturn(_ output: Output) -> ThenStubAction<Mocking, Input, Output> {
+    public func thenReturn(_ output: Output) -> ThenStubAction<Mocking, Input, Output> {
         // save action
         return self
     }
 
     @discardableResult
-    func thenReturn(_ action: (Input) -> Output) -> ThenStubAction<Mocking, Input, Output> {
+    public func thenReturn(_ action: (Input) -> Output) -> ThenStubAction<Mocking, Input, Output> {
         // save action
         return self
     }

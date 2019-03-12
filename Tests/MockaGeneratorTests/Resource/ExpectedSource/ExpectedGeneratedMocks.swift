@@ -13,17 +13,22 @@ func test() {
                 .thenReturn(10)
                 .thenReturn { 10 * 20 }
     }
+
+    verify(mock).readWriteProperty.get()
 }
 
 class MockSimpleProtocol: SimpleProtocol, Mock {
     static let identifier: String = "SimpleProtocol"
     lazy var stub = Stubbing(mock: self)
-    lazy var verification = Verificating(mock: self)
+    lazy var verification = Verifying(mock: self)
 
     var readWriteProperty: Int = 0
     var optionalProperty: Int? = 0
     func noReturn() {}
-    func withParam(_ param: String, param2: String) -> Int { fatalError() }
+    func withParam(_ param: String, param2: String) -> Int {
+        // status
+        fatalError()
+    }
 
     class Stubbing: Stub {
 
@@ -41,18 +46,18 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
             return StubProperty(mock: mock, identifier: "optionalProperty")
         }
 
-        func noReturn() -> StubFunction<MockSimpleProtocol, Void, Void> {
-            return StubFunction(
+        func noReturn() -> StubMethod<MockSimpleProtocol, Void, Void> {
+            return StubMethod(
                 mock: mock,
                 identifier: "noReturn()",
                 input: ()
             )
         }
 
-        func withParam<_String: Matchable>(_ param: _String, param2: _String) -> StubFunction<MockSimpleProtocol, (String, String), Int>
-                where _String.MatchedType == String
+        func withParam<M1: Matchable, M2: Matchable>(_ param: M1, param2: M2) -> StubMethod<MockSimpleProtocol, (M1, M2), Int>
+                where M1.MatchedType == String, M2.MatchedType == String
         {
-            return StubFunction(
+            return StubMethod(
                 mock: mock,
                 identifier: "withParam(_ param: String, param2: String) -> Int",
                 input: (param, param2)
@@ -67,160 +72,32 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
         init(mock: MockSimpleProtocol) {
             self.mock = mock
         }
-    }
-}
 
-class MockNormalProtocol: NormalProtocol, Mock {
-
-    required init() {
-        fatalError()
-    }
-
-    required init(labelA a: String, _ b: String) {
-        fatalError()
-    }
-
-    var readOnlyProperty: String {
-        get {
-            fatalError()
+        var readWriteProperty: VerificationProperty<MockSimpleProtocol, Int> {
+            return VerificationProperty(mock: mock, identifier: "readWriteProperty")
         }
-    }
 
-    var readWriteProperty: Int {
-        get {
-            fatalError()
+        var optionalProperty: VerificationProperty<MockSimpleProtocol, Int?> {
+            return VerificationProperty(mock: mock, identifier: "optionalProperty")
         }
-        set {
-            fatalError()
+
+        @discardableResult
+        func noReturn() -> VerificationMethod<MockSimpleProtocol, Void, Void> {
+            return VerificationMethod(
+                    mock: mock,
+                    identifier: "noReturn()",
+                    input: ()
+            )
         }
-    }
 
-    var optionalProperty: Int? {
-        get {
-            fatalError()
-        }
-        set {
-            fatalError()
-        }
-    }
-
-    static var staticReadOnlyProperty: String {
-        get {
-            fatalError()
-        }
-    }
-
-    static var staticReadWriteProperty: Int {
-        get {
-            fatalError()
-        }
-        set {
-            fatalError()
-        }
-    }
-
-    static var staticOptionalProperty: Int? {
-        get {
-            fatalError()
-        }
-        set {
-            fatalError()
-        }
-    }
-
-    func noReturn() {
-        fatalError()
-    }
-
-    func withThrows() throws -> Int {
-        fatalError()
-    }
-
-    func withNoReturnThrows() throws {
-        fatalError()
-    }
-
-    func withParam(_ param: String) -> Int {
-        fatalError()
-    }
-
-    func withClosure(_ closure: (String) -> Int) -> Int {
-        fatalError()
-    }
-
-    func withParamAndClosure(param: String, closure:(String) -> Int) -> Int {
-        fatalError()
-    }
-
-    func withEscapeClosure(closure: @escaping (String) -> Void) {
-        fatalError()
-    }
-
-    func withOptionalClosure(closure: ((String) -> Void)?) {
-        fatalError()
-    }
-
-    func withOptionalClosureAndReturn(closure: ((String) -> Void)?) -> Int {
-        fatalError()
-    }
-
-    func withLabelAndUnderscore(labelA a: String, _ b: String) {
-        fatalError()
-    }
-
-    func withNamedTuple(tuple: (a: String, b: String)) -> Int {
-        fatalError()
-    }
-
-    func withImplicitlyUnwrappedOptional(i: Int!) -> String {
-        fatalError()
-    }
-
-    static func staticNoReturn() {
-        fatalError()
-    }
-
-    static func staticWithThrows() throws -> Int {
-        fatalError()
-    }
-
-    static func staticWithNoReturnThrows() throws {
-        fatalError()
-    }
-
-    static func staticWithParam(_ param: String) -> Int {
-        fatalError()
-    }
-
-    static func staticWithClosure(_ closure: (String) -> Int) -> Int {
-        fatalError()
-    }
-
-    static func staticWithParamAndClosure(param: String, closure:(String) -> Int) -> Int {
-        fatalError()
-    }
-
-    static func staticWithEscapeClosure(closure: @escaping (String) -> Void) {
-        fatalError()
-    }
-
-    static func staticWithOptionalClosure(closure: ((String) -> Void)?) {
-        fatalError()
-    }
-
-    static func staticWithOptionalClosureAndReturn(closure: ((String) -> Void)?) -> Int {
-        fatalError()
-    }
-
-    static func staticWithLabelAndUnderscore(labelA a: String, _ b: String) {
-        fatalError()
-    }
-
-    static func staticWithNamedTuple(tuple: (a: String, b: String)) -> Int {
-        fatalError()
-    }
-
-    static func staticWithImplicitlyUnwrappedOptional(i: Int!) -> String {
-        fatalError()
+        @discardableResult
+        func withParam<M1: Matchable, M2: Matchable>(_ param: M1, param2: M2) -> VerificationMethod<MockSimpleProtocol, (M1, M2), Int>
+                where M1.MatchedType == String, M2.MatchedType == String
+        {
+            return VerificationMethod(
+                    mock: mock,
+                    identifier: "withParam(_ param: String, param2: String) -> Int",
+                    input: (param, param2)
+            )
     }
 }

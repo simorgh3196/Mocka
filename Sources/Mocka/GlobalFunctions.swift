@@ -6,12 +6,12 @@ public func stub<Mocking: Mock>(_ mock: Mocking, _ stubbing: ((Mocking.Stubbing)
 
 // MARK: - Verification
 
-public func when<Mocking: Mock, Input, Output>(_ function: StubFunction<Mocking, Input, Output>) -> ThenStubAction<Mocking, Input, Output> {
+public func when<Mocking: Mock, Input, Output>(_ function: StubMethod<Mocking, Input, Output>) -> ThenStubAction<Mocking, Input, Output> {
     return ThenStubAction(function: function)
 }
 
-public func verify<Mocking: Mock>(_ mock: Mocking, times: UInt = 1, file: StaticString = #file, line: UInt = #line) -> Mocking.Verifying {
-    return mock.verification
+public func verify<Mocking: Mock, Verifying>(_ mock: Mocking, _ call: CallMatcher = .times(1), file: StaticString = #file, line: UInt = #line) -> Verifying where Verifying == Mocking.Verifying {
+    return Verifying(mock: mock, call: call, file: file, line: line)
 }
 
 // MARK: - ParameterMatcher
@@ -24,7 +24,11 @@ public func equal<T: Equatable>(to parameter: T) -> ParameterMatcher<T> {
     return ParameterMatcher { $0 == parameter }
 }
 
-public func equal<T>(in matcher: @escaping ParameterMatcher<T>.Matcher) -> ParameterMatcher<T> {
+public func notEqual<T: Equatable>(to parameter: T) -> ParameterMatcher<T> {
+    return ParameterMatcher { $0 != parameter }
+}
+
+public func match<T>(with matcher: @escaping ParameterMatcher<T>.Matcher) -> ParameterMatcher<T> {
     return ParameterMatcher(matcher: matcher)
 }
 

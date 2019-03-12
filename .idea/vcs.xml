@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724/Carthage/Checkouts/Nimble" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724/Carthage/Checkouts/Quick" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724/Carthage/Checkouts/Quick/Externals/Nimble" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724/Carthage/Checkouts/Result" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Commandant.git--4728659954759093724/Carthage/Checkouts/xcconfigs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Nimble.git-6212398284954758326" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/PathKit.git--8859841199188422798" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Quick.git-1150561360711711963" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Quick.git-1150561360711711963/Externals/Nimble" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Result.git-5340389298235388599" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Spectre.git-6731546496038849743" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/Stencil.git--9177468381547151079" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/StencilSwiftKit.git-6410051983727809948" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/.build/checkouts/swift-syntax.git-5115035547307498035" vcs="Git" />
+  </component>
+</project>
