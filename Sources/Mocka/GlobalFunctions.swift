@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: - Stub
 
 public func stub<Mocking: Mock>(_ mock: Mocking, _ stubbing: ((Mocking.Stubbing) -> Void)) {
@@ -10,8 +12,14 @@ public func when<Mocking: Mock, Input, Output>(_ function: StubMethod<Mocking, I
     return ThenStubAction(function: function)
 }
 
-public func verify<Mocking: Mock, Verifying>(_ mock: Mocking, _ call: CallMatcher = .times(1), file: StaticString = #file, line: UInt = #line) -> Verifying where Verifying == Mocking.Verifying {
-    return Verifying(mock: mock, call: call, file: file, line: line)
+public func verify<Mocking: Mock>(_ mock: Mocking, _ mode: VerificationMode = .times(1), file: StaticString = #file, line: UInt = #line) -> Mocking.Verifying {
+    return mock.createVerification(mode: mode, file: file, line: line)
+}
+
+public func verifyNoMoreInteractions<Mocking: Mock>(_ mock: Mocking, file: StaticString = #file, line: UInt = #line) {
+}
+
+public func verifyZeroInteractions<Mocking: Mock>(_ mock: Mocking, file: StaticString = #file, line: UInt = #line) {
 }
 
 // MARK: - ParameterMatcher
@@ -20,12 +28,28 @@ public func any<T>() -> ParameterMatcher<T> {
     return ParameterMatcher { _ in true }
 }
 
-public func equal<T: Equatable>(to parameter: T) -> ParameterMatcher<T> {
-    return ParameterMatcher { $0 == parameter }
+public func equal<T: Equatable>(to value: T) -> ParameterMatcher<T> {
+    return ParameterMatcher { parameter in
+        parameter == value
+    }
 }
 
-public func notEqual<T: Equatable>(to parameter: T) -> ParameterMatcher<T> {
-    return ParameterMatcher { $0 != parameter }
+public func notEqual<T: Equatable>(to value: T) -> ParameterMatcher<T> {
+    return ParameterMatcher { parameter in
+        parameter != value
+    }
+}
+
+public func equalNil<T>() -> ParameterMatcher<T?> {
+    return ParameterMatcher<T?> { parameter in
+        parameter == nil
+    }
+}
+
+public func notEqualNil<T>() -> ParameterMatcher<T?> {
+    return ParameterMatcher<T?> { parameter in
+        parameter != nil
+    }
 }
 
 public func match<T>(with matcher: @escaping ParameterMatcher<T>.Matcher) -> ParameterMatcher<T> {
@@ -34,4 +58,14 @@ public func match<T>(with matcher: @escaping ParameterMatcher<T>.Matcher) -> Par
 
 public func range<T: Comparable>(of range: Range<T>) -> ParameterMatcher<T> {
     return ParameterMatcher(matcher: range.contains)
+}
+
+public func match(withRegexp pattern: String, options: NSRegularExpression.Options = []) -> ParameterMatcher<String> {
+    return ParameterMatcher { parameter in
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: options) else {
+            return false
+        }
+        let matches = regex.matches(in: parameter, options: [], range: NSMakeRange(0, (parameter as NSString).length))
+        return !matches.isEmpty
+    }
 }

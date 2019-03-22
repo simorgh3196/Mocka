@@ -1,5 +1,6 @@
 import XCTest
-@testable import MockaGenerator
+@_exported import MockaGenerator
+//@testable import MockaGenerator
 
 final class MockaGeneratorTests: XCTestCase {
 

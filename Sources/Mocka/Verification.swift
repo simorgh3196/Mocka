@@ -1,20 +1,22 @@
+typealias VerificationIdentifier = String
+
 public protocol Verification {
     associatedtype Mocking: Mock where Mocking.Verifying == Self
 
-    var mock: Mocking { get }
-    var call: CallMatcher { get }
+    var mock: Mocking? { get }
+    var mode: VerificationMode { get }
     var sourceLocation: (file: StaticString, line: UInt) { get }
 
-    init(mock: Mocking, call: CallMatcher, file: StaticString, line: UInt)
+    init(mock: Mocking, mode: VerificationMode, file: StaticString, line: UInt)
 }
 
 public class VerificationMethod<Mocking: Mock, Input, Output> {
 
     let mock: Mocking
-    let identifier: String
+    let identifier: VerificationIdentifier
     let input: Input
 
-    init(mock: Mocking, identifier: String, input: Input) {
+    init(mock: Mocking, identifier: VerificationIdentifier, input: Input) {
         self.mock = mock
         self.identifier = identifier
         self.input = input

@@ -1,6 +1,6 @@
 public protocol Stub {
     associatedtype Mocking: Mock where Mocking.Stubbing == Self
-    var mock: Mocking { get }
+    var mock: Mocking? { get }
 }
 
 public class StubMethod<Mocking: Mock, Input, Output> {
@@ -30,7 +30,7 @@ public class StubProperty<Mocking: Mock, T> {
         return StubMethod(mock: mock, identifier: identifier + "#get", input: ())
     }
 
-    public func set<M: Matchable>(_ parameter: M) -> StubMethod<Mocking, M, Void> where M.MatchedType == T {
+    public func set<M: ParameterMatchable>(_ parameter: M) -> StubMethod<Mocking, M, Void> where M.MatchedType == T {
         return StubMethod(mock: mock, identifier: identifier + "#set", input: parameter)
     }
 }
