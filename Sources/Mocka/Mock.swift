@@ -1,7 +1,4 @@
 public protocol Mock: class {
-    associatedtype Stubbing: Stub
-    associatedtype Verifying: Verification
+    associatedtype _MethodSignature: MethodSignature<Self>
     static var identifier: String { get }
-    var stub: Stubbing { get }
-    func createVerification(mode: VerificationMode, file: StaticString, line: UInt) -> Verifying
 }

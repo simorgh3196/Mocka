@@ -7,61 +7,20 @@ import Mocka
 func test() {
     let mock = MockSimpleProtocol()
 
-    stub(mock) { stub in
-        when(stub.readWriteProperty.get)
-                .thenReturn(10)
-                .thenReturn(10)
-                .thenReturn { 10 * 20 }
-    }
+//    stub(mock) { stub in
+//        when(stub.readWriteProperty.get)
+//                .thenReturn(10)
+//                .thenReturn(10)
+//                .thenReturn { 10 * 20 }
+//    }
 
-    verify(mock, .once).readWriteProperty.get()
-
-//    verify(invoked: .noReturn())
-//    verify(invoked: .noReturn())
-//    verify(invoked: .withParam("hello", param2: "sim"))
-
-//    verify(invoked: .noReturn())
 }
-
-//class InvocationMethod<Base> {
-//
-//    class func get(_ keypath: PartialKeyPath<Base>) -> InvokationMethod {
-//        return .init()
-//    }
-//
-//    class func set<M: ParameterMatchable, T>(_ keypath: WritableKeyPath<Base, T>, value: M) -> InvokationMethod where T == M.MatchedType {
-//        return .init()
-//    }
-//}
-//
-//extension InvokationMethod where Base: MockSimpleProtocol {
-//
-//    class func noReturn
-//        ()
-//        -> InvokationMethod {
-//            return .init()
-//    }
-//
-//    static func withParam
-//        <M1: ParameterMatchable, M2: ParameterMatchable>
-//        (_ param: M1, param2: M2)
-//        -> InvokationMethod
-//        where M1.MatchedType == String, M2.MatchedType == String
-//    {
-//        return .init()
-//    }
-//}
-//
-//func verify<Mocking: Mock, Invokation: Mockcing.Invocation>(mock: Mocking, invoked method: InvocationMethod<T>) {
-//}
-
-//func verify(invoked method: MockSimpleProtocol.Invokation) {
-//}
 
 class MockSimpleProtocol: SimpleProtocol, Mock {
 
+    typealias _MethodSignature = MethodSignature<MockSimpleProtocol>
+
     static let identifier: String = "SimpleProtocol"
-    lazy var stub = Stubbing(mock: self)
 
     var readWriteProperty: Int = 0
     var optionalProperty: Int? = 0
@@ -71,96 +30,16 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
         fatalError()
     }
 
-    func createVerification(mode: VerificationMode, file: StaticString, line: UInt)
-        -> MockSimpleProtocol.Verifying
-    {
-        return Verifying(mock: self, mode: mode, file: file, line: line)
-    }
-
-//    class Invokation: InvokationMethod<MockSimpleProtocol> {
+//    class _MethodSignature: MethodSignature<MockSimpleProtocol> {
 //
-//        class func noReturn () -> Invokation {
+//        class func noReturn () -> MethodSignature {
 //            return .init()
 //        }
 //
-//        static func withParam <M1: ParameterMatchable, M2: ParameterMatchable> (_ param: M1, param2: M2) -> Invokation
+//        class func withParam <M1: ParameterMatchable, M2: ParameterMatchable> (_ param: M1, param2: M2) -> MethodSignature
 //            where M1.MatchedType == String, M2.MatchedType == String
 //        {
 //            return .init()
 //        }
 //    }
-
-    class Stubbing: Stub {
-
-        weak var mock: MockSimpleProtocol?
-
-        init(mock: MockSimpleProtocol) {
-            self.mock = mock
-        }
-
-        var readWriteProperty: StubProperty<MockSimpleProtocol, Int> {
-            return StubProperty(mock: mock!, identifier: "readWriteProperty")
-        }
-
-        var optionalProperty: StubProperty<MockSimpleProtocol, Int?> {
-            return StubProperty(mock: mock!, identifier: "optionalProperty")
-        }
-
-        func noReturn() -> StubMethod<MockSimpleProtocol, Void, Void> {
-            return StubMethod(
-                mock: mock!,
-                identifier: "noReturn()",
-                input: ()
-            )
-        }
-
-        func withParam<M1: ParameterMatchable, M2: ParameterMatchable>(_ param: M1, param2: M2) -> StubMethod<MockSimpleProtocol, (M1, M2), Int>
-                where M1.MatchedType == String, M2.MatchedType == String
-        {
-            return StubMethod(
-                mock: mock!,
-                identifier: "withParam(_ param: String, param2: String) -> Int",
-                input: (param, param2)
-            )
-        }
-    }
-
-    class Verifying: Verification {
-
-        weak var mock: MockSimpleProtocol?
-        let mode: VerificationMode
-        let sourceLocation: (file: StaticString, line: UInt)
-
-        required init(mock: MockSimpleProtocol, mode: VerificationMode, file: StaticString, line: UInt) {
-            self.mock = mock
-            self.mode = mode
-            self.sourceLocation = (file, line)
-        }
-
-        var readWriteProperty: VerificationProperty<MockSimpleProtocol, Int> {
-            return VerificationProperty(mock: mock!, identifier: "readWriteProperty")
-        }
-
-        var optionalProperty: VerificationProperty<MockSimpleProtocol, Int?> {
-            return VerificationProperty(mock: mock!, identifier: "optionalProperty")
-        }
-
-        @discardableResult
-        func noReturn() -> VerificationMethod<MockSimpleProtocol, Void, Void> {
-            return VerificationMethod(
-                    mock: mock!,
-                    identifier: "noReturn()",
-                    input: ()
-            )
-        }
-
-        @discardableResult
-        func withParam<M1: ParameterMatchable, M2: ParameterMatchable>(_ param: M1, param2: M2) -> VerificationMethod<MockSimpleProtocol, (M1, M2), Int> where M1.MatchedType == String, M2.MatchedType == String {
-            return VerificationMethod(
-                    mock: mock!,
-                    identifier: "withParam(_ param: String, param2: String) -> Int",
-                    input: (param, param2)
-            )
-        }
-    }
 }
