@@ -2,19 +2,11 @@ import Foundation
 
 // MARK: - Stub
 
-//public func stub<Mocking: Mock>(_ mock: Mocking, _ stubbing: ((Mocking.Stubbing) -> Void)) {
-//    stubbing(mock.stub)
+//@discardableResult
+//public func when<Mocking: Mock>(_ mock: Mocking, invoke signature: Mocking._MethodSignature) -> StubAction<Mocking, {
 //}
 
 // MARK: - Verification
-
-//public func when<Mocking: Mock, Input, Output>(_ function: StubMethod<Mocking, Input, Output>) -> ThenStubAction<Mocking, Input, Output> {
-//    return ThenStubAction(function: function)
-//}
-//
-//public func verify<Mocking: Mock>(_ mock: Mocking, _ mode: VerificationMode = .times(1), file: StaticString = #file, line: UInt = #line) -> Mocking.Verifying {
-//    return mock.createVerification(mode: mode, file: file, line: line)
-//}
 
 public func verify<Mocking: Mock>(_ mock: Mocking, invoked signature: Mocking._MethodSignature, _ mode: VerificationMode = .once, file: StaticString = #file, line: UInt = #line) {
 }

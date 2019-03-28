@@ -5,8 +5,8 @@ import Mocka
 @testable import Mocka
 
 func test() {
-    let mock = MockSimpleProtocol()
-
+//    let mock = MockSimpleProtocol()
+//
 //    stub(mock) { stub in
 //        when(stub.readWriteProperty.get)
 //                .thenReturn(10)
@@ -16,20 +16,21 @@ func test() {
 
 }
 
-class MockSimpleProtocol: SimpleProtocol, Mock {
-
-    typealias _MethodSignature = MethodSignature<MockSimpleProtocol>
-
-    static let identifier: String = "SimpleProtocol"
-
-    var readWriteProperty: Int = 0
-    var optionalProperty: Int? = 0
-    func noReturn() {}
-    func withParam(_ param: String, param2: String) -> Int {
-        // status
-        fatalError()
-    }
-
+//class MockSimpleProtocol: SimpleProtocol, Mock {
+//
+//    var stubMethodHolder = StubMethodHolder<Self>()
+//    var invocationRecorder = InvocationRecorder()
+//
+//    static let identifier = "SimpleProtocol"
+//
+//    var readWriteProperty: Int = 0
+//    var optionalProperty: Int? = 0
+//    func noReturn() {}
+//    func withParam(_ param: String, param2: String) -> Int {
+//        // status
+//        fatalError()
+//    }
+//
 //    class _MethodSignature: MethodSignature<MockSimpleProtocol> {
 //
 //        class func noReturn () -> MethodSignature {
@@ -42,4 +43,4 @@ class MockSimpleProtocol: SimpleProtocol, Mock {
 //            return .init()
 //        }
 //    }
-}
+//}

@@ -6,6 +6,3 @@ public enum VerificationMode {
     case atMost(UInt)
     case only
 }
-
-struct Invocation {}
-typealias CallHistory = [Invocation]
