@@ -1,24 +1,35 @@
-
 public class Then<Mocking: Mock, Input, Output> {
 
-    weak var mock: Mocking?
+    let methodSignature: MethodSignature<Mocking, Input, Output>
 
-    init(mock: Mocking) {
-        self.mock = mock
+    init(methodSignature: MethodSignature<Mocking, Input, Output>) {
+        self.methodSignature = methodSignature
     }
 
+    @discardableResult
     public func then(return value: Output) -> Then<Mocking, Input, Output> {
-        // mock.register(stubAction: )
+        let stub = ConcreateStubMethod<Mocking, Input, Output>(
+            identifier: methodSignature.identifier,
+            matcher: methodSignature.matcher,
+            action: { _ in value }
+        )
+        methodSignature.mock?.stubMethodHolder.register(stub: stub)
         return self
     }
 
-    public func then(return action: ((Input) -> Output)) -> Then<Mocking, Input, Output> {
-        // mock.register(stubAction: )
+    @discardableResult
+    public func then(return action: @escaping ((Input) -> Output)) -> Then<Mocking, Input, Output> {
+        let stub = ConcreateStubMethod<Mocking, Input, Output>(
+            identifier: methodSignature.identifier,
+            matcher: methodSignature.matcher,
+            action: action
+        )
+        methodSignature.mock?.stubMethodHolder.register(stub: stub)
         return self
     }
 }
 
-public typealias MethodIdentifier = String
+public typealias MethodIdentifier = AnyHashable
 
 public struct StubMethodHolder<Mocking: Mock> {
     public var methods: [MethodIdentifier: [StubMethod]]
@@ -54,12 +65,12 @@ public protocol StubMethod {
 
 public struct ConcreateStubMethod<Mocking: Mock, Input, Output>: StubMethod {
     public let identifier: MethodIdentifier
-    public let parameterMatcher: ((Input) -> Bool)
+    public let matcher: ParameterMatcher<Input>
     public let action: (Input) -> Output
     public var invocationCount: Int
     public var isVerified: Bool
 
-    public init(identifier: MethodIdentifier, parameterMatcher: @escaping ((Input) -> Bool), action: @escaping (Input) -> Output) {
+    public init(identifier: MethodIdentifier, matcher: ParameterMatcher<Input>, action: @escaping ((Input) -> Output)) {
         self.identifier = identifier
         self.parameterMatcher = parameterMatcher
         self.action = action
@@ -74,40 +85,5 @@ public struct ConcreateStubMethod<Mocking: Mock, Input, Output>: StubMethod {
 
     mutating func verify(count: Int) {
         isVerified = true
-    }
-}
-
-
-
-
-class Hoge {
-    func hoge() {}
-    func fuga(arg: String) -> Int { return arg.count }
-    func fuga(arg: Bool) -> Int { return 1 }
-    func piyo<T: Equatable>(arg: T) -> String { return "" }
-}
-
-final class MockHoge: Hoge, Mock {
-    static var identifier = "Hoge"
-    let stubMethodHolder = StubMethodHolder<MockHoge>()
-
-    class _MethodSignature {
-
-        func hoge() -> _MethodSignature {
-            let method = ConcreateStubMethod(identifier: "hoge()", parameterMatcher: any(), action: <#T##(_) -> _#>)
-
-            return .init()
-        }
-
-        func fuga<M1: ParameterMatchable>(arg: M1) -> _MethodSignature where M1.MatchedType == Bool {
-            return .init()
-        }
-
-        func fuga<M1: ParameterMatchable, T>(arg: M1) -> _MethodSignature where M1.MatchedType == T {
-            return .init()
-        }
-    }
-
-    class _ThrowableMethodSignature {
     }
 }

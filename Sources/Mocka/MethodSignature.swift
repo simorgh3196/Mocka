@@ -1,24 +1,12 @@
-public protocol MethodSignature {
-    var identifier: MethodIdentifier { get }
-}
+public class MethodSignature<Mocking: Mock, Input, Output> {
 
-public class ConcreateMethodSignature<Base, Input, Output>: MethodSignature {
+    weak var mock: Mocking?
     public let identifier: MethodIdentifier
-    public let parameterMathcers: [ParameterMatchable]
+    public let matcher: ParameterMatcher<Input>
 
-    init(identifier: MethodIdentifier, parameterMatchers: [ParameterMatchable]) {
+    public init(mock: Mocking, identifier: MethodIdentifier, matcher: ParameterMatcher<Input>) {
+        self.mock = mock
         self.identifier = identifier
-        self.parameterMatchers = parameterMatchers
-    }
-}
-
-extension MethodSignature {
-
-    public static func get(_ keypath: PartialKeyPath<Base>) -> MethodSignature<Base> {
-        return .init()
-    }
-
-    public static func set<M: ParameterMatchable, T>(_ keypath: WritableKeyPath<Base, T>, value: M) -> MethodSignature<Base> where T == M.MatchedType {
-        return .init()
+        self.matcher = matcher
     }
 }

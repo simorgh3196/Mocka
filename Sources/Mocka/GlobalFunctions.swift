@@ -2,9 +2,15 @@ import Foundation
 
 // MARK: - Stub
 
-//@discardableResult
-//public func when<Mocking: Mock>(_ mock: Mocking, invoke signature: Mocking._MethodSignature) -> StubAction<Mocking, {
-//}
+@discardableResult
+public func when<Mocking: Mock, Input, Output>(_ mock: Mocking, invoke signature: Mocking._MethodSignature) -> Then<Mocking, Input, Output> {
+    return Then(mock: mock)
+}
+
+public func when<Mocking: Mock>(_ mock: Mocking) -> Mocking._MethodSignature {
+    return mock.methodSignature
+}
+
 
 // MARK: - Verification
 
