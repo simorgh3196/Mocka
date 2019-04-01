@@ -1,23 +1,11 @@
 func test() {
     let mock = MockHoge()
 
-//    when(invoke(mock).fuga(arg: "fuga"))
-//        .then(return: 13)
-//        .then(return: 25)
-//
-//    verify(invoke(mock).fuga(arg: "hoge"), .times(2))
+    when(invoke(mock).fuga(arg: "fuga"))
+        .then(return: 13)
+        .then(return: 25)
 
-}
-
-public func when<Mocking: Mock, Input, Output>(_ methodSignature: MethodSignature<Mocking, Input, Output>) -> Then<Mocking, Input, Output> {
-    return Then.in
-}
-
-public func verify<Mocking: Mock, Input, Output>(_ methodSignature: MethodSignature<Mocking, Input, Output>, _ mode: VerificationMode = .once) {
-}
-
-public func invoke<Mocking: Mock>(_ mock: Mocking) -> Mocking._MethodSignature {
-    return mock.methodSignature
+    verify(invoke(mock).fuga(arg: "hoge"), .times(2))
 }
 
 class Hoge {
@@ -27,7 +15,7 @@ class Hoge {
     func fuga(arg: Bool) -> Int { return 1 }
     func piyo<T: Equatable>(arg: T) -> String { return "" }
     func eat(name: String, count: Int) {}
-    func function(a1: String, a2: Int, a3: Bool)
+    func function(a1: String, a2: Int, a3: Bool) {}
 }
 
 final class MockHoge: Hoge, Mock {

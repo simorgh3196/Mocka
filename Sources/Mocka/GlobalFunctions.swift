@@ -1,20 +1,18 @@
 import Foundation
 
-// MARK: - Stub
-
-@discardableResult
-public func when<Mocking: Mock, Input, Output>(_ mock: Mocking, invoke signature: Mocking._MethodSignature) -> Then<Mocking, Input, Output> {
-    return Then(mock: mock)
-}
-
-public func when<Mocking: Mock>(_ mock: Mocking) -> Mocking._MethodSignature {
+public func invoke<Mocking: Mock>(_ mock: Mocking) -> Mocking._MethodSignature {
     return mock.methodSignature
 }
 
+// MARK: - Stub
+
+public func when<Mocking: Mock, Input, Output>(_ methodSignature: MethodSignature<Mocking, Input, Output>) -> Then<Mocking, Input, Output> {
+    return Then(methodSignature: methodSignature)
+}
 
 // MARK: - Verification
 
-public func verify<Mocking: Mock>(_ mock: Mocking, invoked signature: Mocking._MethodSignature, _ mode: VerificationMode = .once, file: StaticString = #file, line: UInt = #line) {
+public func verify<Mocking: Mock, Input, Output>(_ methodSignature: MethodSignature<Mocking, Input, Output>, _ mode: VerificationMode = .once, file: StaticString = #file, line: UInt = #line) {
 }
 
 public func verifyNoMoreInteractions<Mocking: Mock>(_ mock: Mocking, file: StaticString = #file, line: UInt = #line) {
