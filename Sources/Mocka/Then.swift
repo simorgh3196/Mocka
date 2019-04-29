@@ -7,6 +7,14 @@ public class Then<Mocking: Mock, Input, Output> {
     }
 
     @discardableResult
+    public func then(return values: Output...) -> Then<Mocking, Input, Output> {
+        let initial = then(return: values.first!)
+        return values.dropFirst().reduce(initial) { result, value in
+            result.then(return: value)
+        }
+    }
+
+    @discardableResult
     public func then(return value: Output) -> Then<Mocking, Input, Output> {
         let stub = ConcreateStubMethod<Mocking, Input, Output>(
             identifier: methodSignature.identifier,
@@ -35,6 +43,14 @@ public class ThenThrows<Mocking: Mock, Input, Output> {
 
     init(methodSignature: MethodSignature<Mocking, Input, Output>) {
         self.methodSignature = methodSignature
+    }
+
+    @discardableResult
+    public func then(return values: Output...) -> ThenThrows<Mocking, Input, Output> {
+        let initial = then(return: values.first!)
+        return values.dropFirst().reduce(initial) { result, value in
+            result.then(return: value)
+        }
     }
 
     @discardableResult
