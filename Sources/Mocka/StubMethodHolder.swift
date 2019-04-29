@@ -19,9 +19,11 @@ public class StubMethodHolder<Mocking: Mock> {
         guard let stubMethods = stubs as? [ConcreateStubMethod<MockHoge, Input, Output>] else {
             fatalError("method type is invalid")
         }
-        guard let matchedStubMethod = stubMethods.first(where: { $0.matcher.match(with: input) }) else {
+        let matchedStubMethods = stubMethods.filter { $0.matcher.match(with: input) }
+        guard !matchedStubMethods.isEmpty else {
             fatalError("method not stubbed for parameters: \(input)")
         }
+        let matchedStubMethod = matchedStubMethods.first { !$0.invoked } ?? matchedStubMethods.last!
 
         return matchedStubMethod.invoke(with: input)
     }

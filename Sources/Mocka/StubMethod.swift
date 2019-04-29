@@ -10,6 +10,10 @@ public class ConcreateStubMethod<Mocking: Mock, Input, Output>: StubMethod {
     public var invocationCount: Int
     public var isVerified: Bool
 
+    public var invoked: Bool {
+        return invocationCount != 0
+    }
+
     public init(identifier: MethodIdentifier, matcher: ParameterMatcher<Input>, action: @escaping ((Input) -> Output)) {
         self.identifier = identifier
         self.matcher = matcher
