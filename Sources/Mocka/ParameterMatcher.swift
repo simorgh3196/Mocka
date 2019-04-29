@@ -1,4 +1,4 @@
-public class ParameterMatcher<T>: ParameterMatchable {
+public class ParameterMatcher<T>: Matchable {
 
     public typealias MatchedType = T
     public typealias Matcher = (T) -> Bool
@@ -9,7 +9,7 @@ public class ParameterMatcher<T>: ParameterMatchable {
         self.matcher = matcher
     }
 
-    init<M: ParameterMatchable>(matchable: M) where M.MatchedType == MatchedType {
+    init<M: Matchable>(matchable: M) where M.MatchedType == MatchedType {
         self.matcher = matchable.match(with:)
     }
 
@@ -17,22 +17,22 @@ public class ParameterMatcher<T>: ParameterMatchable {
         return matcher(parameter)
     }
 
-    public func combine<M: ParameterMatchable>(_ matcher: M, _ filter: @escaping ((T) -> M.MatchedType)) -> ParameterMatcher<T> {
+    public func combine<M: Matchable>(_ matcher: M, _ filter: @escaping ((T) -> M.MatchedType)) -> ParameterMatcher<T> {
         return ParameterMatcher { self.match(with: $0) && matcher.match(with: filter($0)) }
     }
 
-    public static func combine<M: ParameterMatchable>(_ matcher: M, _ filter: @escaping ((T) -> M.MatchedType)) -> ParameterMatcher<T> {
+    public static func combine<M: Matchable>(_ matcher: M, _ filter: @escaping ((T) -> M.MatchedType)) -> ParameterMatcher<T> {
         return ParameterMatcher { matcher.match(with: filter($0)) }
     }
 }
 
-public extension ParameterMatchable {
+public extension Matchable {
 
-    public func or<M: ParameterMatchable>(_ other: M) -> ParameterMatcher<MatchedType> where M.MatchedType == MatchedType {
+    func or<M: Matchable>(_ other: M) -> ParameterMatcher<MatchedType> where M.MatchedType == MatchedType {
         return ParameterMatcher { self.match(with: $0) || other.match(with: $0) }
     }
 
-    public func and<M: ParameterMatchable>(_ other: M) -> ParameterMatcher<MatchedType> where M.MatchedType == MatchedType {
+    func and<M: Matchable>(_ other: M) -> ParameterMatcher<MatchedType> where M.MatchedType == MatchedType {
         return ParameterMatcher { self.match(with: $0) && other.match(with: $0) }
     }
 }

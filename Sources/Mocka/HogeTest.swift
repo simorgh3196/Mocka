@@ -19,7 +19,6 @@ class Hoge {
 }
 
 final class MockHoge: Hoge, Mock {
-
     typealias Mocking = MockHoge
 
     static var identifier = "Hoge"
@@ -34,41 +33,65 @@ final class MockHoge: Hoge, Mock {
             self.mock = mock
         }
 
-        func get<T>(_ keypath: KeyPath<Mocking, T>) -> MethodSignature<Mocking, Void, T> {
+        func get<T>(_ keypath: KeyPath<Mocking, T>) -> MethodSignature<Mocking, Void, T>
+        {
             return MethodSignature(mock: mock, identifier: keypath, matcher: any())
         }
 
-        func set<M: ParameterMatchable, T>(_ keypath: WritableKeyPath<Mocking, T>, value: M) -> MethodSignature<Mocking, T, Void> where T == M.MatchedType {
+        func set<M, T>(_ keypath: WritableKeyPath<Mocking, T>, value: M) -> MethodSignature<Mocking, T, Void>
+            where
+            M: Matchable, T == M.MatchedType
+        {
             return MethodSignature(mock: mock, identifier: keypath, matcher: ParameterMatcher(matchable: value))
         }
 
-        func hoge() ->  MethodSignature<Mocking, Void, Void> {
+        func hoge() ->  MethodSignature<Mocking, Void, Void>
+        {
             return MethodSignature(mock: mock, identifier: "hoge() -> Void", matcher: any())
         }
 
-        func fuga<M1: ParameterMatchable>(arg m1: M1) -> MethodSignature<Mocking, String, Int> where M1.MatchedType == String {
-            let combinedMatcher = ParameterMatcher(matchable: m1)
-            return MethodSignature(mock: mock, identifier: "fuga(arg: String) -> Int", matcher: combinedMatcher)
+        func fuga<M1>(arg m1: M1) -> MethodSignature<Mocking, String, Int>
+            where
+            M1: Matchable, M1.MatchedType == String
+        {
+                let matcher = ParameterMatcher(matchable: m1)
+                return MethodSignature(mock: mock, identifier: "fuga(arg: String) -> Int", matcher: matcher)
         }
 
-        func fuga<M1: ParameterMatchable>(arg m1: M1) -> MethodSignature<Mocking, Bool, Int> where M1.MatchedType == Bool {
-            let combinedMatcher = ParameterMatcher(matchable: m1)
-            return MethodSignature(mock: mock, identifier: "fuga(arg: Bool) -> Int", matcher: combinedMatcher)
+        func fuga<M1>(arg m1: M1) -> MethodSignature<Mocking, Bool, Int>
+            where
+            M1: Matchable, M1.MatchedType == Bool
+        {
+            let matcher = ParameterMatcher(matchable: m1)
+            return MethodSignature(mock: mock, identifier: "fuga(arg: Bool) -> Int", matcher: matcher)
         }
 
-        func piyo<M1: ParameterMatchable, T>(arg m1: M1) -> MethodSignature<Mocking, T, String> where M1.MatchedType == T {
-            let combinedMatcher = ParameterMatcher(matchable: m1)
-            return MethodSignature(mock: mock, identifier: "piyo<T: Equatable>(arg: T) -> Int", matcher: combinedMatcher)
+        func piyo<M1, T>(arg m1: M1) -> MethodSignature<Mocking, T, String>
+            where
+            M1: Matchable, M1.MatchedType == T,
+            T: Equatable
+        {
+            let matcher = ParameterMatcher(matchable: m1)
+            return MethodSignature(mock: mock, identifier: "piyo<T: Equatable>(arg: T) -> Int", matcher: matcher)
         }
 
-        func eat<M1: ParameterMatchable, M2: ParameterMatchable>(name m1: M1, count m2: M2) -> MethodSignature<Mocking, (String, Int), Void> where M1.MatchedType == String, M2.MatchedType == Int {
+        func eat<M1, M2>(name m1: M1, count m2: M2) -> MethodSignature<Mocking, (String, Int), Void>
+            where
+            M1: Matchable, M1.MatchedType == String,
+            M2: Matchable, M2.MatchedType == Int
+        {
             let combinedMatcher = ParameterMatcher<(String, Int)>
                 .combine(m1) { $0.0 }
                 .combine(m2) { $0.1 }
             return MethodSignature(mock: mock, identifier: "eat(name: String, count: Int) -> Void", matcher: combinedMatcher)
         }
 
-        func function<M1: ParameterMatchable, M2: ParameterMatchable, M3: ParameterMatchable>(a1 m1: M1, a2 m2: M2, a3 m3: M3) -> MethodSignature<Mocking, (String, Int, Bool), Void> where M1.MatchedType == String, M2.MatchedType == Int, M3.MatchedType == Bool {
+        func function<M1, M2, M3>(a1 m1: M1, a2 m2: M2, a3 m3: M3) -> MethodSignature<Mocking, (String, Int, Bool), Void>
+            where
+            M1: Matchable, M1.MatchedType == String,
+            M2: Matchable, M2.MatchedType == Int,
+            M3: Matchable, M3.MatchedType == Bool
+        {
             let combinedMatcher = ParameterMatcher<(String, Int, Bool)>
                 .combine(m1) { $0.0 }
                 .combine(m2) { $0.1 }
